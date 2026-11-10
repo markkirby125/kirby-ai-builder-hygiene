@@ -66,7 +66,7 @@ D. Detection, before anything else. Run the [Module 1](module_1_builder_artifact
 
 ## Routing by symptom
 
-Use this table when the user names one problem instead of asking for the full run. Step D, Step 0 and the Module 1 git preconditions (clean tree, `<baseline-sha>`) still apply; the module order does not, so the routed module runs alone. A routed Module 2 or Module 3 still needs checkpoint approval: ask for it before its first edit, as in Module 1 step 9. Module 4 then verifies the module that ran.
+Use this table when the user names one problem instead of asking for the full run. Step D, Step 0 and Module 1 preconditions 1 and 2 (clean tree, `<baseline-sha>`, build and test baseline) still apply; the module order does not, so the routed module runs alone. A routed Module 2 or Module 3 still needs checkpoint approval: ask for it before its first edit, as in Module 1 step 9. Module 4 then verifies the module that ran.
 
 | Symptom | Module |
 |---|---|
