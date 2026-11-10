@@ -42,14 +42,14 @@ The generator pattern matches only builder generator tags, so a plain Next.js, A
 
 ## 1.3 Grep-before-delete rule
 
-`data-id` and `data-component-*` may be read by tests, CSS or JS. For each distinct attribute name, run:
+`data-id`, `data-component-*`, `__v0*` and `__ai*` may be read by tests, CSS or JS. For each distinct attribute or prop name, run:
 
 ```bash
 grep -rInE --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} \
   -e 'data-id' -e "dataset(\s|\.|\[)\s*['\"]?id" -e "getAttribute\(\s*['\"]data-id" .
 ```
 
-Swap in each `data-component-<name>` and its camelCase `component<Name>` dataset key. Ignore hits on the element that carries the attribute; any other hit (a selector, a `querySelector`, a test, a `dataset` or `getAttribute` read) keeps the attribute. Put it on the "left in place" list with the file and line that reads it.
+Swap in each `data-component-<name>` and its camelCase `component<Name>` dataset key. For each `__v0*` or `__ai*` name, grep the exact name with the same excludes (`grep -rIn --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} -e '<name>' .`). Ignore hits on the element that carries the attribute; any other hit (a selector, a `querySelector`, a test, a `dataset` or `getAttribute` read) keeps the attribute. Put it on the "left in place" list with the file and line that reads it.
 
 ## 1.4 Procedure
 
@@ -62,7 +62,7 @@ Swap in each `data-component-<name>` and its camelCase `component<Name>` dataset
 
    The `{...}` brace expansion needs bash or zsh. In another shell, write one `--exclude-dir=` per directory.
 
-3. Apply the grep-before-delete rule to every `data-id` and `data-component-*` name.
+3. Apply the grep-before-delete rule to every `data-id`, `data-component-*`, `__v0*` and `__ai*` name.
 4. Remove the confirmed artifacts. Edit files in place; do not reformat untouched lines.
 5. If you removed `lovable-tagger`, delete its import and its entry in the `plugins` array, then run the package manager's uninstall: `npm uninstall lovable-tagger`, `pnpm remove lovable-tagger`, `yarn remove lovable-tagger` or `bun remove lovable-tagger`. Never hand-edit the lockfile.
 6. Search the head and entry files for third-party scripts, and follow any runtime loader (a script that injects other `<script>` tags, a tag manager container, a partial or include script) to the tags it adds later. Sort each one into keep (analytics, tag manager, consent, CAPTCHA, vendored widgets), remove (builder debug tooling) or uncertain.
@@ -113,8 +113,8 @@ Do not:
 ## 1.7 Verification
 
 - Every removed pattern returns zero hits on a rerun of its grep.
-- Every kept `data-id` or `data-component-*` has a recorded reader.
-- The analytics and consent script count matches the pre-edit count.
+- Every kept `data-id`, `data-component-*`, `__v0*` or `__ai*` has a recorded reader.
+- The count of analytics, consent, CAPTCHA and vendored widget scripts matches the pre-edit count.
 - The badge count matches the pre-edit count.
 - Build and tests match the baseline result. Full checks run in [Module 4](./module_4_verification.md).
 
@@ -141,6 +141,6 @@ Do not:
 **Flagged badges or attribution** (not removed)
 - <text>, <file:line>
 
-**Kept scripts**: <analytics, tag manager, consent, by name>
+**Kept scripts**: <analytics, tag manager, consent, CAPTCHA, vendored widgets, by name>
 **Build / tests**: <command> -> <pass|fail>, baseline <pass|fail>
 ````

@@ -26,10 +26,10 @@ Builder exports paste the same 6 to 10 Tailwind utilities onto every card, capti
    This misses strings inside `cn(...)`, `clsx(...)` and template literals. Grep those calls by hand and add them to the count. Count repeated inline styles the same way:
    ```bash
    grep -rhoE --include='*.tsx' --include='*.jsx' --include='*.html' \
-     -e 'style="[^"]+"' --exclude-dir=node_modules --exclude-dir=.git . \
+     -e 'style="[^"]+"' -e 'style=\{\{[^}]+\}\}' --exclude-dir=node_modules --exclude-dir=.git . \
      | sort | uniq -c | sort -rn | awk '$1 >= 3'
    ```
-   Save both outputs as the "before" count.
+   The second pattern catches one-line JSX style objects (`style={{ padding: 16 }}`); style objects that span lines or hold nested braces, and style constants passed by name, need a hand grep. Save both outputs as the "before" count.
 2. **Group by role.** For each string used 3 or more times, write down what the element does: a content card, a meta caption, a primary button. Two strings with the same role belong to one group even if their values differ.
 3. **Prefer what exists.** If the project already has a component for the role (for example shadcn `<Card>`), replace the repeated markup with that component. Create a CSS class only when no component fits. Never swap markup without a screenshot check of that component: render one instance before and after and compare. If the component adds layout classes (`flex`, `flex-col`, `gap`, `py`), pass the project's overrides (`!p-0` in Tailwind v3, `p-0!` in v4 where the leading `!` form is deprecated, or `gap-0` when `cn` uses tailwind-merge) or create the semantic class instead.
 4. **Extract.** Add one class per role in the component layer, named by role, not by look: `.app-card`, `.meta-caption`, `.btn-primary`. Never `.rounded-box` or `.grey-text`.

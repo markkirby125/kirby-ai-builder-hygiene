@@ -55,12 +55,12 @@ Every line needs PASS, FAIL or N/A with a reason.
 - [ ] No builder attributes remain: `grep -rIn -e 'data-lovable-' -e 'data-v0-' -e 'data-bolt-' -e 'lovable-tagger' -e 'data-source-line' -e 'data-source-file' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} .` prints nothing (the same command as the Module 1 inventory; the brace expansion needs bash or zsh)
 - [ ] No builder `<meta name="generator">` remains
 - [ ] Each removed `data-id` and `data-component-*` was grepped first and nothing read it
-- [ ] Analytics, tag manager and consent scripts are all still present (count before equals count after)
+- [ ] Analytics, tag manager and consent scripts, CAPTCHA or bot protection, and vendored widgets are all still present (count before equals count after)
 - [ ] Builder badges or attribution were flagged to the user, not removed
 - [ ] Uncertain items are listed, not deleted
 
 **Module 2: semantic DOM flattening**
-- [ ] One `<main>`; `<nav>` uses `<ul>/<li>`; every `<section>` has an accessible name
+- [ ] One `<main>`; `<nav>` uses `<ul>/<li>`; every `<section>` has an accessible name or is listed with a reason (Module 2: a section with no heading stays as it is)
 - [ ] One `<h1>`, no skipped heading levels, no empty headings
 - [ ] No CSS selector (`> div`, `:nth-child`) or JS query that pointed at a removed wrapper
 - [ ] Heading anchor links (`#id`) still resolve
