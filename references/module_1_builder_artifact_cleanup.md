@@ -13,10 +13,10 @@ grep -rIil --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrang
   -e 'name="generator" content="[^"]*\(lovable\|v0\|bolt\|cursor\)' .
 ```
 
-The generator pattern matches only builder generator tags, so a plain Next.js, Astro, Gatsby or Hugo generator meta does not qualify a repo. The `{...}` brace expansion needs bash or zsh (see step 2). The dispatcher runs this grep first (step D). If it prints nothing, the skill does not apply: report `not applicable` and stop unless the user insists.
+The generator pattern matches only builder generator tags, so a plain Next.js, Astro, Gatsby or Hugo generator meta does not qualify a repo. The `{...}` brace expansion needs bash or zsh (see section 1.4 step 2). The dispatcher runs this grep first (step D). If it prints nothing, the skill does not apply: report `not applicable` and stop unless the user insists.
 - Preconditions (in analysis-only mode, see the [dispatcher](./00_dispatcher.md) Modes, skip preconditions 1 and 2 and step 9; run the greps and list proposed changes without editing):
   1. `git rev-parse --verify HEAD` succeeds and `git status --short -- .`, run from the package root (the folder that holds the exported app), prints nothing. Tracked files that a project hook rewrites (for example a stamped sitemap) may be left out of this check only with the user's approval; list them. Otherwise stop before any edit and ask the user. Never commit without their approval. This covers the baseline and `wip:` commits only; checkpoint commits are approved once in step 9.
-     - No repo or no commit: with approval, agree a `.gitignore` first (`node_modules`, build output, `.env*`), show `git status --short`, then `git init`, stage the agreed files by explicit path and make one baseline commit: `git commit -m "baseline: untouched export"`.
+     - No repo or no commit: with approval, agree a `.gitignore` first (`node_modules`, build output, `.env*`), run `git init`, show `git status --short`, then stage the agreed files by explicit path and make one baseline commit: `git commit -m "baseline: untouched export"`.
      - Dirty tree: with approval, commit the user's changes first and separately, staged by the explicit paths they confirm: `git commit -m "wip: changes before builder cleanup"`. The `m1` checkpoint is the next commit. Never fold user edits into a cleanup commit.
 
      If the project's rules set a commit-message format, write both messages in it and keep the `baseline:` or `wip:` tag (dispatcher locked decision 8).
@@ -56,6 +56,8 @@ Swap in each `data-component-<name>` and its camelCase `component<Name>` dataset
 
 ## 1.4 Procedure
 
+If the head, layout or chrome is injected from partials or the assets are fingerprinted, follow the dispatcher's "Generated regions and asset pipelines" section: edit the source partial, regenerate, and run its `--check`.
+
 1. Run the detection grep and record the hit list.
 2. Inventory every artifact from the 1.2 catalogue with `grep -rIn` and the excludes below. Save the counts per pattern. For builder attributes, use exactly the command that [Module 4](./module_4_verification.md) section 4 reruns:
 
@@ -68,10 +70,10 @@ Swap in each `data-component-<name>` and its camelCase `component<Name>` dataset
 3. Apply the grep-before-delete rule to every `data-id`, `data-component-*`, `__v0*` and `__ai*` name.
 4. Remove the confirmed artifacts. Edit files in place; do not reformat untouched lines.
 5. If you removed `lovable-tagger`, delete its import and its entry in the `plugins` array, then run the package manager's uninstall: `npm uninstall lovable-tagger`, `pnpm remove lovable-tagger`, `yarn remove lovable-tagger` or `bun remove lovable-tagger`. Never hand-edit the lockfile.
-6. Search the head and entry files for third-party scripts, and follow any runtime loader (a script that injects other `<script>` tags, a tag manager container, a partial or include script) to the tags it adds later. Sort each one into keep (analytics, tag manager, consent, CAPTCHA, vendored widgets), remove (builder debug tooling) or uncertain.
+6. Search the head and entry files for third-party scripts, and follow any runtime loader (a script that injects other `<script>` tags, a tag manager container, a partial or include script) to the tags it adds later. Record the pre-edit count of kept scripts and widgets for 1.7. Sort each one into keep (analytics, tag manager, consent, CAPTCHA, vendored widgets), remove (builder debug tooling) or uncertain.
 7. Search for badges and attribution. Record each one with its file and line. Do not edit it.
 8. Rerun the inventory greps. Every removed pattern must now return zero hits.
-9. Run the build and tests and compare them with the baseline. Show the user the Module 1 diff. Then ask once whether they approve local checkpoint commits for the rest of the run, and record the answer. With a yes, make the `m1` checkpoint (at the end of this module or at the start of Module 2, before its first component) and every `m2` checkpoint without asking again. With a no, make no checkpoint commits. Tell the user that Module 2 needs checkpoint commits to roll back safely, and let them choose: approve the checkpoint commits, make each checkpoint commit by hand when you reach it, or skip Module 2. If they skip it, modules 3 and 4 run on the Module 1 result. Every checkpoint in this skill uses these steps:
+9. Run the build and tests and compare them with the baseline. Show the user the Module 1 diff. Then ask once whether they approve local checkpoint commits for the rest of the run, including the `git revert` commits Module 2 step 7 may need, and record the answer. With a yes, make the `m1` checkpoint (at the end of this module or at the start of Module 2, before its first component) and every `m2` checkpoint without asking again. With a no, make no checkpoint commits. Tell the user that Module 2 needs checkpoint commits to roll back safely, and let them choose: approve the checkpoint commits, make each checkpoint commit by hand when you reach it, or skip Module 2. If they skip it, modules 3 and 4 run on the Module 1 result. Every checkpoint in this skill uses these steps:
    - List every path the step touched, new files included (`package.json` and the lockfile if step 5 ran).
    - Stage exactly those paths: `git add -- <path> [<path>...]`. Never use `git add -A`, `git add .` or `git commit -am`. Never stage `.env*`, key files or anything git ignores.
    - Run `git status --short` and confirm the staged set equals the touched set. Leave out any untracked file that is not ours and mention it to the user.
