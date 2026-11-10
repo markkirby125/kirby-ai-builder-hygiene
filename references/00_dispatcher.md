@@ -15,7 +15,7 @@ These are fixed. Do not relax them.
 5. Module 2 can break layout (`> div` selectors, flex and grid context, heading anchors). It needs before and after screenshots and a build and test run that matches the baseline.
 6. The output is a diff plus a verification report. Never hand back "cleaned code only". In analysis-only mode (see Modes) nothing is edited, so the output is the proposed-change list instead.
 7. Run detection (step D) first, then Step 0, then modules 1, 2, 3, 4 in that order. Module 2 runs only with checkpoint commits (run order item 2). Module 5 routes design and copy work to other skills and documents the optional builder-hygiene project rule. It performs no cleanup.
-8. Project rules versus this skill. A project's own rules (AGENTS.md, CLAUDE.md, CONTRIBUTING or similar) may require auto-commit, auto-deploy, a commit-message format, a review gate or a task file. Where they conflict with this skill, this skill's gates win: commit only with the approvals described here, and never push or deploy. Follow the project's commit-message format for checkpoint commits (keep the `m1` or `m2` tag in the message), and follow its other rules where they do not conflict. The report states that deploy is a separate step for the owner. Project-locked wording and design docs override the generic checks in [Module 5](module_5_handoffs.md).
+8. Project rules versus this skill. A project's own rules (AGENTS.md, CLAUDE.md, CONTRIBUTING or similar) may require auto-commit, auto-deploy, a commit-message format, a review gate or a task file. Where they conflict with this skill, this skill's gates win: commit only with the approvals described here, and never push or deploy. Follow the project's commit-message format for every commit this skill makes, the `baseline:` and `wip:` commits included (keep the `m1` or `m2` tag in the message), and follow its other rules where they do not conflict. The report states that deploy is a separate step for the owner. Project-locked wording and design docs override the generic checks in [Module 5](module_5_handoffs.md).
 
 ## Modes
 
@@ -37,6 +37,8 @@ Before the first edit (in audit mode, list them only), find what the project gen
 grep -rIliE --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} \
   -e '@generated' -e 'do not edit' -e 'BEGIN[ _-]?(GENERATED|PARTIAL|INCLUDE)' .
 ```
+
+The `{...}` brace expansion needs bash or zsh; in another shell, write one `--exclude-dir=` per directory.
 
 When they exist: edit the source partial, never an injected copy, then run the generator and its `--check`. After a CSS or JS edit, run the hash or fingerprint script and stage the rewritten references with the same checkpoint, by explicit path. Follow the project's sitemap `lastmod` rule. Add each `--check` script to the Module 4 checks.
 
