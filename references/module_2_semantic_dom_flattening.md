@@ -105,7 +105,7 @@ Do not:
 - Run this module without before and after screenshots.
 - Rename or renumber a heading's `id`.
 - Add `role` attributes where a native element does the job.
-- Change text, classes or styling. Class consolidation is Module 3.
+- Change text, add or remove classes, or change styling. Moving an element's existing classes onto the surviving element (2.3) is allowed, and so is the fake-list reset. Class consolidation is Module 3.
 
 ## 2.7 Verification
 
