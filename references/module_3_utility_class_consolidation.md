@@ -8,6 +8,8 @@ Builder exports paste the same 6 to 10 Tailwind utilities onto every card, capti
 
 ## Preconditions
 
+In analysis-only mode (dispatcher, Modes), skip the module-order and Step 0 preconditions: run the utility-system check and the step 1 counts, and list proposed classes and inconsistent values without editing.
+
 - A utility system exists. Check for a `tailwindcss` or `unocss` dependency in `package.json`, a `tailwind.config.*` or `uno.config.*` file, `@tailwind` or `@import "tailwindcss"` in the CSS, a Tailwind CDN `<script>` tag, or `@apply` in the CSS. If none exists, the utility steps do not apply: report `Module 3: not applicable (no utility system)` and stop, unless the user asks for the plain-CSS fallback below.
 - In a full run, modules 1 and 2 are done and their diffs are reviewed. If Module 2 was skipped because checkpoint commits were declined, work on the Module 1 result. In a symptom-routed run (dispatcher, Routing by symptom), this module runs alone after step D and Step 0, with the Module 1 git preconditions; modules 1 and 2 are not required.
 - The Step 0 baseline from the [dispatcher](./00_dispatcher.md) exists (screenshots and Lighthouse accessibility results taken on the untouched code). [Module 4](./module_4_verification.md) compares against it.
