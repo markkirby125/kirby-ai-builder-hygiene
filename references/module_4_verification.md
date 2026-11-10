@@ -4,7 +4,7 @@ Proves modules 1 to 3 changed the code and not the page. Runs last. The skill's 
 
 ## 1. Detect the toolchain
 
-In analysis-only mode (dispatcher, Modes), run only the detection and script listing below: no scripts, no baseline worktree, no sections 2 to 4.
+In analysis-only mode (dispatcher, Modes), run only the detection and script listing below, with no baseline worktree and no sections 2 to 4. Run no project script (for example `build`, `test`, `lint`, `predeploy`, `deploy`) unless the user agrees. Report with the audit template in section 5.
 
 Pick the package manager from the lockfile: `pnpm-lock.yaml` means pnpm, `bun.lock` or `bun.lockb` means bun, `yarn.lock` means yarn, `package-lock.json` means npm. List the scripts:
 
@@ -47,7 +47,7 @@ Also check by hand what a screenshot cannot show: tab through the page once, and
 - **Lighthouse (default):** run the chrome-devtools `lighthouse_audit` tool on each page and read the accessibility section of the report. The before results come from Step 0.
 - **axe:** only if the project already has `@axe-core/playwright`, `jest-axe` or `vitest-axe`. Run its existing test.
 
-Reading results: compare the list of failing audit IDs (for example `color-contrast`, `heading-order`, `landmark-one-main`), not only the score. Pass means no new failing ID and a score no lower than before. A fixed ID (often `heading-order` or `landmark-one-main` after Module 2) is a gain; list it. A new failure is a regression: revert the change that caused it as in "Reverting a change" below.
+Reading results: compare the list of failing audit IDs (for example `color-contrast`, `heading-order`, `landmark-one-main`), not only the score. Pass means no new failing ID and a score no lower than before. A fixed ID (often `heading-order` or `landmark-one-main` after Module 2) is a gain; list it. A `before: not run` baseline cannot show a regression: record the after result, mark the row `not compared`, and never mark it PASS or FAIL. A new failure is a regression: revert the change that caused it as in "Reverting a change" below.
 
 **Reverting a change.** If a checkpoint holds only that change (an `m2` checkpoint for one component), run `git revert --no-edit <sha>`; the checkpoint approval from Module 1 step 9 covers it, or the user runs it by hand. If no checkpoint isolates it (checkpoints declined, or it shares a checkpoint with approved work, as every Module 3 change does in `m3`), undo only the lines that change touched, by hand, and show the user the diff. Never restore whole files or the tree, never run `git checkout -- .` or `git reset --hard`: that also discards the Module 1 cleanup. If a revert conflicts, stop and ask the user. After any revert, rerun the build and tests and recapture the affected routes at 375, 768 and 1440 px, and report the post-revert results, not the earlier ones. Contrast failures that existed before go to the hand-off in [Module 5](./module_5_handoffs.md).
 
@@ -79,7 +79,7 @@ Every line needs PASS, FAIL or N/A with a reason.
 - [ ] Each generator `--check` script passes (N/A if none exist)
 - [ ] Types, lint and tests match or beat the baseline
 - [ ] Screenshots at 375, 768 and 1440 px show no visible shift (diff images reviewed by hand)
-- [ ] No new accessibility failures
+- [ ] No new accessibility failures (`not compared` if the Step 0 baseline is `not run`)
 
 ## 5. Report template
 
@@ -101,4 +101,18 @@ Every line needs PASS, FAIL or N/A with a reason.
 **Not run:** <check, reason>
 **Deploy:** not done; a separate step for the owner
 **Checklist:** <n> PASS, <n> FAIL, <n> N/A (full list below)
+````
+
+Audit report template (analysis-only mode; nothing was edited):
+
+````markdown
+## Builder hygiene: audit report (no edits made)
+**Detection (step D):** <n> files, or not applicable. Command run: <the Module 1 section 1.1 grep>
+**Findings** (file:line, rule, risk: low = no layout or behaviour effect; medium = a selector, anchor, test or generator hit; high = layout or behaviour may change)
+- Module 1: <file:line, artifact, rule, risk>
+- Module 2: <file:line, proposed change, rule, risk>
+- Module 3: <file:line, repeated string or value, rule, risk>
+- Module 5 hand-offs: <item, target skill>
+**Not run:** <check or script, reason>
+**Suggested next step:** <full run, a routed module, or none>
 ````

@@ -61,7 +61,7 @@ Headings (minimum):
 - One `<h1>` per page.
 - No skipped levels (`h2` to `h4`).
 - No empty headings.
-- Heading tags used only for font size: do not retag them here, because the fix needs a new class and a visual check. List each one with file and line in the report for Module 3 or the user.
+- Heading tags used only for font size: do not retag them here, because the fix needs a new class and a visual check. List each one with file and line for the [Module 5](./module_5_handoffs.md) design hand-off.
 
 For the full WCAG 2.2 AA landmark and heading rules, hand off through [Module 5](./module_5_handoffs.md).
 

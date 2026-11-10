@@ -20,12 +20,12 @@ These are fixed. Do not relax them.
 ## Modes
 
 - **Full run (default):** step D, Step 0, then modules 1 to 4.
-- **Analysis only (audit):** when the user asks for an audit, a review or a dry run, or does not approve edits. No baseline captures, no commits, no edits, no installs, and no script that writes files (`build`, `predeploy`, `deploy`) unless the user agrees. Run step D (it stops on zero hits as below), then every detection, inventory grep and check in modules 1 to 3, the generated-regions check below, and Module 4 section 1 toolchain detection (list the scripts only; no baseline worktree). The git preconditions (clean tree, checkpoint approval) do not apply, because nothing is written. Output: a list of proposed changes, each with file, line, the module rule behind it and a risk (low: no layout or behaviour effect; medium: a selector, anchor, test or generator hit; high: layout or behaviour may change), plus any Module 5 hand-offs.
+- **Analysis only (audit):** when the user asks for an audit, a review or a dry run, or does not approve edits. No baseline captures, no commits, no edits, no installs. Run no project script (for example `build`, `test`, `lint`, `predeploy`, `deploy`) unless the user agrees. Run step D (it stops on zero hits as below), then every detection, inventory grep and check in modules 1 to 3, the generated-regions check below, and Module 4 section 1 toolchain detection (list the scripts only; no baseline worktree). The git preconditions (clean tree, checkpoint approval) do not apply, because nothing is written. Output: the audit report template in [Module 4](module_4_verification.md) section 5.
 
 ## Inputs
 
 - The repo or the files exported from the builder (HTML, JSX, TSX, CSS, Tailwind config).
-- The user's confirmation of the project commands this run will execute. Project scripts and their lifecycle hooks (`prebuild`, `postinstall`, `preuninstall`) run arbitrary code from the export, and so do git hooks (husky, lint-staged, `pre-commit`, `commit-msg`) on every checkpoint commit. Before the first one runs, list the exact commands (build or stand-in, test, types, lint, `preview` or `dev`, the Route B screenshot command if used, generator and hash scripts, the package-manager uninstall in Module 1 step 5, and any git hooks a commit will trigger) and get one yes. Run nothing else without asking again. In analysis-only mode, run none of them unless the user agrees.
+- The user's confirmation of the project commands this run will execute. Project scripts and their lifecycle hooks (`prebuild`, `postinstall`, `preuninstall`) run arbitrary code from the export, and so do git hooks (husky, lint-staged, `pre-commit`, `commit-msg`) on every checkpoint commit. Before the first one runs, list the exact commands (build or stand-in, test, types, lint, `preview` or `dev`, the Route B screenshot command if used, generator and hash scripts, the package-manager uninstall in Module 1 step 5, and any git hooks a commit will trigger) and get one yes. Run nothing else without asking again. In analysis-only mode, run no project script (for example `build`, `test`, `lint`, `predeploy`, `deploy`) unless the user agrees.
 - The project's build and test commands. If no build exists, use a stand-in from [Module 4](module_4_verification.md) section 1 (`check`, `validate` or a documented gate command). If there is neither, write `[needs: build command]` and ask before Module 1 starts.
 - A way to take screenshots of the key pages (Playwright, a browser tool, or the user's own screenshots).
 - In-scope routes: the routes the user names, or every user-facing route in the router when the user names none. Above 10 routes (30 captures per set), ask the user to name a subset, for example one page per template, and record it.
@@ -66,7 +66,7 @@ D. Detection, before anything else. Run the [Module 1](module_1_builder_artifact
 
 ## Routing by symptom
 
-Use this table when the user names one problem instead of asking for the full run. Step D, Step 0 and Module 1 preconditions 1 and 2 (clean tree, `<baseline-sha>`, build and test baseline) still apply; the module order does not, so the routed module runs alone. A routed Module 2 or Module 3 still needs checkpoint approval: ask for it before its first edit, as in Module 1 step 9. Module 4 then verifies the module that ran.
+Use this table when the user names one problem instead of asking for the full run. Step D, Step 0 and Module 1 preconditions 1 and 2 (clean tree, `<baseline-sha>`, build and test baseline) still apply; the module order does not, so the routed module runs alone. A routed Module 2 or Module 3 still needs checkpoint approval: ask for it before its first edit, as in Module 1 step 9. Module 4 then verifies the module that ran. A routed Module 5 edits nothing: it needs only step D, skips Step 0, the git preconditions and Module 4 verification, and just reports its hand-offs.
 
 | Symptom | Module |
 |---|---|
@@ -74,7 +74,7 @@ Use this table when the user names one problem instead of asking for the full ru
 | Div soup, single-child wrappers, no `<main>` or `<nav>`, several `<h1>` tags, skipped heading levels | [module_2_semantic_dom_flattening.md](module_2_semantic_dom_flattening.md) |
 | Long shadcn or Tailwind class strings repeated across components, mixed radius or spacing values for the same role, repeated inline styles | [module_3_utility_class_consolidation.md](module_3_utility_class_consolidation.md) |
 | "Did the cleanup break anything?", accessibility score, report needed | [module_4_verification.md](module_4_verification.md) |
-| Generic look, weak contrast, stacked pills above the h1, template-sounding copy | [module_5_handoffs.md](module_5_handoffs.md) |
+| Generic look, weak contrast, stacked pills above the h1, heading tags used only for size, template-sounding copy | [module_5_handoffs.md](module_5_handoffs.md) |
 
 ## Outputs
 
