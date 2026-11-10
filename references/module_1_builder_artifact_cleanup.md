@@ -90,6 +90,7 @@ Remove:
 
 Keep:
 - Event handlers, props, aria-* attributes and all styling.
+- data-state, data-slot, data-orientation, data-side, data-align, data-radix-* and data-testid.
 - All analytics, tag manager and consent scripts, CAPTCHA or bot protection, and vendored third-party widgets.
 - Builder badges or attribution text. Flag them; do not remove them.
 

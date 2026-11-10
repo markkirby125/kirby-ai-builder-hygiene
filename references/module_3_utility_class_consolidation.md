@@ -14,7 +14,7 @@ In analysis-only mode (dispatcher, Modes), skip the module-order and Step 0 prec
 - In a full run, modules 1 and 2 are done and their diffs are reviewed. If Module 2 was skipped because checkpoint commits were declined, work on the Module 1 result. In a symptom-routed run (dispatcher, Routing by symptom), this module runs alone after step D and Step 0, with the Module 1 git preconditions; modules 1 and 2 are not required.
 - The Step 0 baseline from the [dispatcher](./00_dispatcher.md) exists (screenshots and Lighthouse accessibility results taken on the untouched code). [Module 4](./module_4_verification.md) compares against it.
 - You know where the project defines tokens: `tailwind.config.*` (`theme.extend`), or CSS variables in the main CSS file (`globals.css`, `index.css`, `app.css`, or a Tailwind v4 `@theme` block).
-- You know the project's component layer: an existing `@layer components` block, or existing React components such as shadcn's `Card` and `Button` in `components/ui/`. Plain-CSS fallback: on a site with a hand-written stylesheet, the component layer is that stylesheet, and the project's own custom properties take the place of token utilities.
+- You know the project's component layer: an existing `@layer components` block, or existing React components such as shadcn's `Card` and `Button` in `components/ui/`. Plain-CSS fallback: on a site with a hand-written stylesheet, the component layer is that stylesheet, and the project's own custom properties take the place of token utilities. Run the procedure below unchanged: count repeated class lists and inline styles (step 1, same 3-use threshold), group by role, and move a repeated inline-style cluster into one role-named class in that stylesheet.
 - You know whether the stylesheet is generated, injected or fingerprinted (dispatcher, "Generated regions and asset pipelines"). After editing a fingerprinted or versioned stylesheet (a hash in the file name or a `?v=` query), run the project's hash script and stage the rewritten references with the same checkpoint.
 
 ## Procedure
@@ -22,13 +22,13 @@ In analysis-only mode (dispatcher, Modes), skip the module-order and Step 0 prec
 1. **Count repeated strings.** Run from the repo root:
    ```bash
    grep -rhoE --include='*.tsx' --include='*.jsx' --include='*.html' \
-     -e 'className="[^"]+"' -e 'class="[^"]+"' --exclude-dir=node_modules --exclude-dir=.git . \
+     -e 'className="[^"]+"' -e 'class="[^"]+"' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} . \
      | sort | uniq -c | sort -rn | awk '$1 >= 3'
    ```
    This misses strings inside `cn(...)`, `clsx(...)` and template literals. Grep those calls by hand and add them to the count. Count repeated inline styles the same way:
    ```bash
    grep -rhoE --include='*.tsx' --include='*.jsx' --include='*.html' \
-     -e 'style="[^"]+"' -e 'style=\{\{[^}]+\}\}' --exclude-dir=node_modules --exclude-dir=.git . \
+     -e 'style="[^"]+"' -e 'style=\{\{[^}]+\}\}' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} . \
      | sort | uniq -c | sort -rn | awk '$1 >= 3'
    ```
    The second pattern catches one-line JSX style objects (`style={{ padding: 16 }}`); style objects that span lines or hold nested braces, and style constants passed by name, need a hand grep. Save both outputs as the "before" count.
