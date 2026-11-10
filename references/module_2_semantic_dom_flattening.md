@@ -61,7 +61,7 @@ Headings (minimum):
 - One `<h1>` per page.
 - No skipped levels (`h2` to `h4`).
 - No empty headings.
-- No heading tags used only for font size. Use a class instead.
+- Heading tags used only for font size: do not retag them here, because the fix needs a new class and a visual check. List each one with file and line in the report for Module 3 or the user.
 
 For the full WCAG 2.2 AA landmark and heading rules, use the `better-accessibility` skill.
 
@@ -85,7 +85,7 @@ Refactor this markup to semantic HTML (WCAG 2.2 AA). The rendered output must lo
 - Merge nested flex or grid containers when one parent gives the same layout.
 - Landmarks: one <main>, a page <header> and <footer>, <nav> with <ul>/<li> for link lists, <section> only with an accessible name (name an existing unnamed section with aria-labelledby; never rename an id or downgrade it), <article> for self-contained items. No content outside landmarks.
 - Fake lists become <ul>/<li> with list-style, margin and padding reset.
-- Headings: one <h1>, no skipped levels, no empty headings, no heading tags used only for size.
+- Headings: one <h1>, no skipped levels, no empty headings. List heading tags used only for size; do not retag them.
 - Move existing classes, ids and attributes onto the new elements.
 - Do not change any element that a CSS selector, script or test depends on (child selectors, :nth-child, #anchors, querySelector, closest).
 
