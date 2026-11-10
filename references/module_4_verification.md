@@ -15,7 +15,7 @@ Run only the scripts that exist and that the user confirmed in the dispatcher's 
 | Check | Script names to look for | If missing |
 |---|---|---|
 | Build | `build` | Use a stand-in: `check`, `validate` or a gate command the project documents. If there is none, stop and ask the user how the project builds. Never use `predeploy`, `deploy` or any script that publishes or writes deploy output as the build |
-| Types | `typecheck`, `type-check`, `tsc` | Only if `tsconfig.json` exists, run the local binary: `pnpm exec tsc --noEmit`, `yarn exec tsc --noEmit`, `bun x tsc --noEmit` or `npx --no-install tsc --noEmit`. If it fails to start, report "types: not run (no local typescript)" |
+| Types | `typecheck`, `type-check`, `tsc` | Only if `tsconfig.json` exists, run the local binary: `pnpm exec tsc --noEmit`, `yarn exec tsc --noEmit`, `./node_modules/.bin/tsc --noEmit` (for bun; never `bun x`, which can fetch from npm) or `npx --no-install tsc --noEmit`. If it fails to start, report "types: not run (no local typescript)" |
 | Lint | `lint` | Skip and note it |
 | Tests | `test`, `test:unit`, `test:e2e` | Skip and note it. Say the change has no test cover |
 | Generator checks | each `--check` script found in the dispatcher's "Generated regions and asset pipelines" step | Skip; none exist |
