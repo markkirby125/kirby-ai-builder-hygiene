@@ -10,7 +10,7 @@ Pick the package manager from the lockfile: `pnpm-lock.yaml` means pnpm, `bun.lo
 npm pkg get scripts    # works in any Node project, whatever the manager
 ```
 
-Run only the scripts that exist, with the detected manager (`pnpm run build`, `bun run build`, `npm run build`):
+Run only the scripts that exist and that the user confirmed in the dispatcher's Inputs step (ask before any script not on that list), with the detected manager (`pnpm run build`, `bun run build`, `npm run build`):
 
 | Check | Script names to look for | If missing |
 |---|---|---|

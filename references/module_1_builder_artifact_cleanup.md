@@ -20,7 +20,7 @@ The generator pattern matches only builder generator tags, so a plain Next.js, A
      - Dirty tree: with approval, commit the user's changes first and separately, staged by the explicit paths they confirm: `git commit -m "wip: changes before builder cleanup"`. The `m1` checkpoint is the next commit. Never fold user edits into a cleanup commit.
 
      In every case, before the first edit, record the pre-cleanup baseline sha with `git rev-parse --short HEAD` and keep it as `<baseline-sha>`. [Module 4](./module_4_verification.md) uses it.
-  2. The project's build and test commands are known and their current result is recorded before any edit; [Module 4](./module_4_verification.md) compares against this baseline. A failure that exists before the edit is recorded as the baseline and is not fixed in this module.
+  2. The project's build and test commands are known, the user has confirmed the command list (dispatcher, Inputs), and their current result is recorded before any edit; [Module 4](./module_4_verification.md) compares against this baseline. A failure that exists before the edit is recorded as the baseline and is not fixed in this module.
   3. You know which builder produced the code. Check `package.json`, the vite or next config, and the first lines of the main layout file.
 
 ## 1.2 Artifact catalogue

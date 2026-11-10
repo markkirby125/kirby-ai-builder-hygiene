@@ -25,6 +25,7 @@ These are fixed. Do not relax them.
 ## Inputs
 
 - The repo or the files exported from the builder (HTML, JSX, TSX, CSS, Tailwind config).
+- The user's confirmation of the project commands this run will execute. Project scripts and their lifecycle hooks (`prebuild`, `postinstall`, `preuninstall`) run arbitrary code from the export. Before the first one runs, list the exact commands (build or stand-in, test, types, lint, `preview` or `dev`, generator and hash scripts, the package-manager uninstall in Module 1 step 5) and get one yes. Run nothing else without asking again. In analysis-only mode, run none of them unless the user agrees.
 - The project's build and test commands. If no build exists, use a stand-in from [Module 4](module_4_verification.md) section 1 (`check`, `validate` or a documented gate command). If there is neither, write `[needs: build command]` and ask before Module 1 starts.
 - A way to take screenshots of the key pages (Playwright, a browser tool, or the user's own screenshots).
 - In-scope routes: the routes the user names, or every user-facing route in the router when the user names none. Above 10 routes (30 captures per set), ask the user to name a subset, for example one page per template, and record it.
