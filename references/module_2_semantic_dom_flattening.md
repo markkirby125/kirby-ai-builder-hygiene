@@ -55,7 +55,7 @@ Landmarks (minimum):
 
 Lists:
 - Fake lists (items split by `<br>` with tick characters, div grids of items, bare rows of links) become `<ul>` or `<ol>` with `<li>`, plus a reset of `list-style`, `margin` and `padding` (in the project's stylesheet or as utilities on the list) so browser bullets and indents do not appear. This reset is the one styling change allowed here, because it keeps the render identical. Check the screenshots.
-- Do not put `aria-label` on a generic `<div>` or `<span>`; it has no role to name. Route that to the `better-accessibility` skill.
+- Do not put `aria-label` on a generic `<div>` or `<span>`; it has no role to name. List it for the [Module 5](./module_5_handoffs.md) hand-off to `better-accessibility`.
 
 Headings (minimum):
 - One `<h1>` per page.
@@ -63,7 +63,7 @@ Headings (minimum):
 - No empty headings.
 - Heading tags used only for font size: do not retag them here, because the fix needs a new class and a visual check. List each one with file and line in the report for Module 3 or the user.
 
-For the full WCAG 2.2 AA landmark and heading rules, use the `better-accessibility` skill.
+For the full WCAG 2.2 AA landmark and heading rules, hand off through [Module 5](./module_5_handoffs.md).
 
 ## 2.4 Procedure
 

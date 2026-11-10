@@ -6,7 +6,9 @@ Project docs come first. Before routing, read the project's own design, brand an
 
 ## A. Visual design review
 
-Route to the `impeccable` skill for layout, hierarchy and CTA review, to the `better-colors` skill for palette and token work, and to [kirby-accessible-contrast](../../kirby-accessible-contrast/SKILL.md) for contrast fixes.
+Route to the `impeccable` skill for layout, hierarchy and CTA review, to the `better-colors` skill for palette and token work, and to the `kirby-accessible-contrast` skill for contrast fixes (optional, from the Kirby skills collection; if it is not installed, list the contrast findings for the user).
+
+Route accessibility findings that need more than this skill's landmark and heading minimums (for example `aria-label` on a generic element, full WCAG 2.2 AA landmark and heading review) to the `better-accessibility` skill.
 
 Name these checks in the hand-off:
 - A palette grounded in the brand, with WCAG AA contrast for text and controls.

@@ -87,4 +87,4 @@ This skill fixes code structure. It does not redesign or rewrite. Send visual de
 
 ## Related
 
-- Contrast checks: [kirby-accessible-contrast](../../kirby-accessible-contrast/SKILL.md).
+- Contrast checks: the `kirby-accessible-contrast` skill (optional, from the Kirby skills collection; use it if installed).
