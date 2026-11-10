@@ -36,7 +36,7 @@ Save screenshots outside the repo. Create the folder once with `mkdir -p "${TMPD
 
 Do not install a browser tool to run this module. If no route works, say so in the report and mark the screenshot row as not run.
 
-Compare each pair. If ImageMagick is installed, `compare -metric AE before.png after.png diff.png` prints the count of changed pixels. A small nonzero count is normal from antialiasing and image decoding: open `diff.png` and review it by hand. Without ImageMagick, view each pair side by side. Any visible shift in layout, spacing or content is a failure: find the change that caused it and revert that change.
+Compare each pair. If ImageMagick is installed, `compare -metric AE "${TMPDIR:-/tmp}/kirby-shots/<page>-<width>-before.png" "${TMPDIR:-/tmp}/kirby-shots/<page>-<width>-after.png" "${TMPDIR:-/tmp}/kirby-shots/<page>-<width>-diff.png"` prints the count of changed pixels. A small nonzero count is normal from antialiasing and image decoding: open the diff image and review it by hand. Without ImageMagick, view each pair side by side. Any visible shift in layout, spacing or content is a failure: find the change that caused it and revert that change as in "Reverting a change" below.
 
 Also check by hand what a screenshot cannot show: tab through the page once, and open any menus, dialogs and accordions.
 
@@ -45,7 +45,9 @@ Also check by hand what a screenshot cannot show: tab through the page once, and
 - **Lighthouse (default):** run the chrome-devtools `lighthouse_audit` tool on each page and read the accessibility section of the report. The before results come from Step 0.
 - **axe:** only if the project already has `@axe-core/playwright`, `jest-axe` or `vitest-axe`. Run its existing test.
 
-Reading results: compare the list of failing audit IDs (for example `color-contrast`, `heading-order`, `landmark-one-main`), not only the score. Pass means no new failing ID and a score no lower than before. A fixed ID (often `heading-order` or `landmark-one-main` after Module 2) is a gain; list it. A new failure is a regression: revert the change that caused it. Contrast failures that existed before go to the hand-off in [Module 5](./module_5_handoffs.md).
+Reading results: compare the list of failing audit IDs (for example `color-contrast`, `heading-order`, `landmark-one-main`), not only the score. Pass means no new failing ID and a score no lower than before. A fixed ID (often `heading-order` or `landmark-one-main` after Module 2) is a gain; list it. A new failure is a regression: revert the change that caused it as in "Reverting a change" below.
+
+**Reverting a change.** If a checkpoint holds only that change (an `m2` or `m3` checkpoint), run `git revert --no-edit <sha>`; the checkpoint approval from Module 1 step 9 covers it, or the user runs it by hand. If no checkpoint isolates it (checkpoints declined, or it shares a checkpoint with approved work), undo only the lines that change touched, by hand, and show the user the diff. Never restore whole files or the tree, never run `git checkout -- .` or `git reset --hard`: that also discards the Module 1 cleanup. If a revert conflicts, stop and ask the user. Contrast failures that existed before go to the hand-off in [Module 5](./module_5_handoffs.md).
 
 ## 4. Pass/fail checklist
 
@@ -72,6 +74,7 @@ Every line needs PASS, FAIL or N/A with a reason.
 
 **All modules**
 - [ ] Build passes (or matches its baseline failure)
+- [ ] Each generator `--check` script passes (N/A if none exist)
 - [ ] Types, lint and tests match or beat the baseline
 - [ ] Screenshots at 375, 768 and 1440 px show no visible shift (diff images reviewed by hand)
 - [ ] No new accessibility failures
