@@ -4,6 +4,8 @@ Proves modules 1 to 3 changed the code and not the page. Runs last. The skill's 
 
 ## 1. Detect the toolchain
 
+In analysis-only mode (dispatcher, Modes), run only the detection and script listing below: no scripts, no baseline worktree, no sections 2 to 4.
+
 Pick the package manager from the lockfile: `pnpm-lock.yaml` means pnpm, `bun.lock` or `bun.lockb` means bun, `yarn.lock` means yarn, `package-lock.json` means npm. List the scripts:
 
 ```bash
@@ -31,7 +33,7 @@ Serve the production build with the project's `preview` script; use `dev` only i
 Save screenshots outside the repo. Create the folder once with `mkdir -p "${TMPDIR:-/tmp}/kirby-shots"`, then use `${TMPDIR:-/tmp}/kirby-shots/<page>-<width>-before.png` and `-after.png`. The top-level `-before` files belong to Step 0 and are read-only for all later modules. Module 2 keeps its own local set in `${TMPDIR:-/tmp}/kirby-shots/m2/`. No screenshots go in the repo or in the diff.
 
 - **Route A (default): chrome-devtools MCP.** `new_page` or `navigate_page` to each URL, `resize_page` to 375, 768 and 1440 px wide, then `take_screenshot` with full page on.
-- **Route B: Playwright, only if the project already lists `@playwright/test`, `playwright` or `playwright-core` in `package.json`.** Run the local binary only: `npx --no-install playwright screenshot --full-page --viewport-size=1440,900 <url> "${TMPDIR:-/tmp}/kirby-shots/<page>-1440-after.png"` (use `-before.png` for the Step 0 set) (or `pnpm exec playwright ...`; with only `playwright-core`, the binary is `playwright-core`), and the same for each width. If the browser binary is missing, do not install it: print the failure and use Route C. The bare CLI cannot wait for fonts, force reduced motion or freeze carousels and dates. If the project has its own Playwright script or config that applies the capture protocol, use it. Otherwise record "Route B: capture protocol not applied" in the report, use the same CLI for the before and after sets, and judge each diff by hand before reverting: a difference from animation, a carousel or a date is not a shift.
+- **Route B: Playwright, only if the project already lists `@playwright/test`, `playwright` or `playwright-core` in `package.json`.** Run the local binary only: `npx --no-install playwright screenshot --full-page --viewport-size=1440,900 <url> "${TMPDIR:-/tmp}/kirby-shots/<page>-1440-after.png"` (Step 0 writes `-before.png`; later modules never do) (or `pnpm exec playwright ...`; with only `playwright-core`, the binary is `playwright-core`), and the same for each width. If the browser binary is missing, do not install it: print the failure and use Route C. The bare CLI cannot wait for fonts, force reduced motion or freeze carousels and dates. If the project has its own Playwright script or config that applies the capture protocol, use it. Otherwise record "Route B: capture protocol not applied" in the report, capture only the after set with it (never rewrite the Step 0 `-before` files; if Step 0 used another route, record the route mismatch), and judge each diff by hand before reverting: a difference from animation, a carousel or a date is not a shift.
 - **Route C: the user's own screenshots.** Ask the user for screenshots at the three widths and record where they came from.
 
 Do not install a browser tool to run this module. If no route works, say so in the report and mark the screenshot row as not run.
@@ -47,14 +49,14 @@ Also check by hand what a screenshot cannot show: tab through the page once, and
 
 Reading results: compare the list of failing audit IDs (for example `color-contrast`, `heading-order`, `landmark-one-main`), not only the score. Pass means no new failing ID and a score no lower than before. A fixed ID (often `heading-order` or `landmark-one-main` after Module 2) is a gain; list it. A new failure is a regression: revert the change that caused it as in "Reverting a change" below.
 
-**Reverting a change.** If a checkpoint holds only that change (an `m2` or `m3` checkpoint), run `git revert --no-edit <sha>`; the checkpoint approval from Module 1 step 9 covers it, or the user runs it by hand. If no checkpoint isolates it (checkpoints declined, or it shares a checkpoint with approved work), undo only the lines that change touched, by hand, and show the user the diff. Never restore whole files or the tree, never run `git checkout -- .` or `git reset --hard`: that also discards the Module 1 cleanup. If a revert conflicts, stop and ask the user. Contrast failures that existed before go to the hand-off in [Module 5](./module_5_handoffs.md).
+**Reverting a change.** If a checkpoint holds only that change (an `m2` checkpoint for one component), run `git revert --no-edit <sha>`; the checkpoint approval from Module 1 step 9 covers it, or the user runs it by hand. If no checkpoint isolates it (checkpoints declined, or it shares a checkpoint with approved work, as every Module 3 change does in `m3`), undo only the lines that change touched, by hand, and show the user the diff. Never restore whole files or the tree, never run `git checkout -- .` or `git reset --hard`: that also discards the Module 1 cleanup. If a revert conflicts, stop and ask the user. Contrast failures that existed before go to the hand-off in [Module 5](./module_5_handoffs.md).
 
 ## 4. Pass/fail checklist
 
 Every line needs PASS, FAIL or N/A with a reason.
 
 **Module 1: builder artifact cleanup**
-- [ ] No builder attributes remain: `grep -rIn -e 'data-lovable-' -e 'data-v0-' -e 'data-bolt-' -e 'lovable-tagger' -e 'data-source-line' -e 'data-source-file' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} .` prints nothing (the same command as the Module 1 inventory; the brace expansion needs bash or zsh)
+- [ ] No builder attributes remain: `grep -rIn -e 'data-lovable-' -e 'data-v0-' -e 'data-bolt-' -e 'lovable-tagger' -e 'data-source-line' -e 'data-source-file' -e '__v0' -e 'v0-container' -ie 'generated by \(lovable\|v0\|bolt\)' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} .` prints nothing (the same command as the Module 1 inventory; the brace expansion needs bash or zsh)
 - [ ] No builder `<meta name="generator">` remains
 - [ ] Each removed `data-id` and `data-component-*` was grepped first and nothing read it
 - [ ] Analytics, tag manager and consent scripts, CAPTCHA or bot protection, and vendored widgets are all still present (count before equals count after)
