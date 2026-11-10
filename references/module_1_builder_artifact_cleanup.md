@@ -77,7 +77,7 @@ If the head, layout or chrome is injected from partials or the assets are finger
    - List every path the step touched, new files included (`package.json` and the lockfile if step 5 ran).
    - Stage exactly those paths: `git add -- <path> [<path>...]`. Never use `git add -A`, `git add .` or `git commit -am`. Never stage `.env*`, key files or anything git ignores.
    - Run `git status --short` and confirm the staged set equals the touched set. Leave out any untracked file that is not ours and mention it to the user.
-   - Commit with a unique message: `git commit -m "m1: builder artifact cleanup"` here, `m2: <component> (<n>)` in Module 2, `m3: utility class consolidation` in Module 3. If the project's rules set a commit-message format, follow it and keep the `m1` or `m2` tag in the message (dispatcher locked decision 8). Never push or deploy.
+   - Commit with a unique message: `git commit -m "m1: builder artifact cleanup"` here, `m2: <component> (<n>)` in Module 2, `m3: utility class consolidation` in Module 3. If the project's rules set a commit-message format, follow it and keep the `m1`, `m2` or `m3` tag in the message (dispatcher locked decision 8). Never push or deploy.
    - Record the short sha (`git rev-parse --short HEAD`) for Module 2 step 7's revert range and the report. Checkpoint commits are local; the user may squash them. Then hand off to Module 2, or to Module 3 if Module 2 is skipped.
 
 ## 1.5 Prompt block
