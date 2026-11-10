@@ -2,6 +2,8 @@
 
 This skill cleans code. It does not judge visual design or rewrite copy. When [Module 4](./module_4_verification.md) or the user raises those issues, route them to the skills below and pass the list of findings. Do not do that work here.
 
+Project docs come first. Before routing, read the project's own design, brand and product docs and any locked wording (a style guide, `DESIGN.md`, a copy deck, rules in `AGENTS.md`). They override the generic checks in sections A and B: if the project allows em dashes or fixes a phrase, keep it. Check those docs against the live code for drift first; report any mismatch and do not use a stale doc as the brief.
+
 ## A. Visual design review
 
 Route to the `impeccable` skill for layout, hierarchy and CTA review, to the `better-colors` skill for palette and token work, and to [kirby-accessible-contrast](../../kirby-accessible-contrast/SKILL.md) for contrast fixes.

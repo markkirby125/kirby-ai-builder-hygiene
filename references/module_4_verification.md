@@ -14,21 +14,24 @@ Run only the scripts that exist, with the detected manager (`pnpm run build`, `b
 
 | Check | Script names to look for | If missing |
 |---|---|---|
-| Build | `build` | Stop. Ask the user how the project builds. |
+| Build | `build` | Use a stand-in: `check`, `validate` or a gate command the project documents. If there is none, stop and ask the user how the project builds. Never use `predeploy`, `deploy` or any script that publishes or writes deploy output as the build |
 | Types | `typecheck`, `type-check`, `tsc` | Only if `tsconfig.json` exists, run the local binary: `pnpm exec tsc --noEmit`, `yarn exec tsc --noEmit`, `bun x tsc --noEmit` or `npx --no-install tsc --noEmit`. If it fails to start, report "types: not run (no local typescript)" |
 | Lint | `lint` | Skip and note it |
 | Tests | `test`, `test:unit`, `test:e2e` | Skip and note it. Say the change has no test cover |
+| Generator checks | each `--check` script found in the dispatcher's "Generated regions and asset pipelines" step | Skip; none exist |
 
-Judge every check against the baseline recorded before Module 1: build and tests from Module 1 precondition 2, screenshots and Lighthouse from the dispatcher's Step 0. For types and lint with no recorded baseline, run them on the baseline commit in a separate worktree. Tell the user first. Run `git cat-file -e <baseline-sha>^{commit}`; if the sha does not resolve (the history was squashed or rewritten), record `before: not recorded` and skip the worktree. Otherwise create it with `git worktree add --detach "${TMPDIR:-/tmp}/kirby-baseline-<baseline-sha>" <baseline-sha>`, which refuses a folder that already exists and is not empty (if it does, stop and tell the user). Run the checks there, then remove it with `git worktree remove --force "${TMPDIR:-/tmp}/kirby-baseline-<baseline-sha>"`. Write the full path in every command: shell variables do not persist between commands. If the removal fails, run `git worktree prune` and tell the user which folder is left over; do not delete it yourself. Here `<baseline-sha>` is the pre-cleanup baseline recorded in Module 1 precondition 1. It is not the `m1` or an `m2` checkpoint, which already contain cleanup edits. Never revert or stash the working tree to get one. If that is not possible, record `before: not recorded`. A check that already failed in the baseline is a baseline failure: record it, do not fix it here, and judge the after run against it.
+Watch-mode test runners never exit in a terminal. Run them once: pass `--run` (Vitest, for example `npm test -- --run`) or set `CI=true` (Jest).
+
+Judge every check against the baseline recorded before Module 1: build and tests from Module 1 precondition 2, screenshots and Lighthouse from the dispatcher's Step 0. Types and lint baselines come from Step 0. Only if Step 0 did not record them, run them on the baseline commit in a separate worktree. Tell the user first. Run `git cat-file -e <baseline-sha>^{commit}`; if the sha does not resolve (the history was squashed or rewritten), record `before: not recorded` and skip the worktree. Otherwise create it with `git worktree add --detach "${TMPDIR:-/tmp}/kirby-baseline-<baseline-sha>" <baseline-sha>`, which refuses a folder that already exists and is not empty (if it does, stop and tell the user). Run the checks there (the worktree has no `node_modules`; if a check cannot start, record `before: not recorded`), then remove it with `git worktree remove --force "${TMPDIR:-/tmp}/kirby-baseline-<baseline-sha>"`. Write the full path in every command: shell variables do not persist between commands. If the removal fails, run `git worktree prune` and tell the user which folder is left over; do not delete it yourself. Here `<baseline-sha>` is the pre-cleanup baseline recorded in Module 1 precondition 1. It is not the `m1` or an `m2` checkpoint, which already contain cleanup edits. Never revert or stash the working tree to get one. If that is not possible, record `before: not recorded`. A check that already failed in the baseline is a baseline failure: record it, do not fix it here, and judge the after run against it.
 
 ## 2. Before and after screenshots
 
-Serve the production build with the project's `preview` script; use `dev` only if no preview exists. Capture the same pages at 375, 768 and 1440 px before and after. Before each capture, wait for network idle and `document.fonts.ready`, force reduced motion and `animation: none`, and freeze carousels and date output.
+Serve the production build with the project's `preview` script; use `dev` only if no preview exists. For a Worker with static assets (a `wrangler.toml` or `wrangler.json`/`wrangler.jsonc` with an `assets` setting), or any site whose routes need its server, use the project's `dev` script, not a plain static file server. Capture the same pages at 375, 768 and 1440 px before and after. Before each capture, wait for network idle and `document.fonts.ready`, force reduced motion and `animation: none`, and freeze carousels and date output.
 
 Save screenshots outside the repo. Create the folder once with `mkdir -p "${TMPDIR:-/tmp}/kirby-shots"`, then use `${TMPDIR:-/tmp}/kirby-shots/<page>-<width>-before.png` and `-after.png`. The top-level `-before` files belong to Step 0 and are read-only for all later modules. Module 2 keeps its own local set in `${TMPDIR:-/tmp}/kirby-shots/m2/`. No screenshots go in the repo or in the diff.
 
 - **Route A (default): chrome-devtools MCP.** `new_page` or `navigate_page` to each URL, `resize_page` to 375, 768 and 1440 px wide, then `take_screenshot` with full page on.
-- **Route B: Playwright, only if the project already lists `@playwright/test` or `playwright` in `package.json`.** Run the local binary only: `npx --no-install playwright screenshot --full-page --viewport-size=1440,900 <url> "${TMPDIR:-/tmp}/kirby-shots/<page>-1440-after.png"` (or `pnpm exec playwright ...`), and the same for each width. If the browser binary is missing, do not install it: print the failure and use Route C.
+- **Route B: Playwright, only if the project already lists `@playwright/test`, `playwright` or `playwright-core` in `package.json`.** Run the local binary only: `npx --no-install playwright screenshot --full-page --viewport-size=1440,900 <url> "${TMPDIR:-/tmp}/kirby-shots/<page>-1440-after.png"` (or `pnpm exec playwright ...`; with only `playwright-core`, the binary is `playwright-core`), and the same for each width. If the browser binary is missing, do not install it: print the failure and use Route C.
 - **Route C: the user's own screenshots.** Ask the user for screenshots at the three widths and record where they came from.
 
 Do not install a browser tool to run this module. If no route works, say so in the report and mark the screenshot row as not run.
@@ -49,7 +52,7 @@ Reading results: compare the list of failing audit IDs (for example `color-contr
 Every line needs PASS, FAIL or N/A with a reason.
 
 **Module 1: builder artifact cleanup**
-- [ ] No builder attributes remain: `grep -rIn -e 'data-lovable-' -e 'data-v0-' -e 'data-bolt-' -e 'lovable-tagger' -e 'data-source-line' -e 'data-source-file' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage} .` prints nothing (the same command as the Module 1 inventory; the brace expansion needs bash or zsh)
+- [ ] No builder attributes remain: `grep -rIn -e 'data-lovable-' -e 'data-v0-' -e 'data-bolt-' -e 'lovable-tagger' -e 'data-source-line' -e 'data-source-file' --exclude-dir={node_modules,.git,dist,build,.next,out,coverage,.wrangler,.vercel,.netlify} .` prints nothing (the same command as the Module 1 inventory; the brace expansion needs bash or zsh)
 - [ ] No builder `<meta name="generator">` remains
 - [ ] Each removed `data-id` and `data-component-*` was grepped first and nothing read it
 - [ ] Analytics, tag manager and consent scripts are all still present (count before equals count after)
@@ -91,5 +94,6 @@ Every line needs PASS, FAIL or N/A with a reason.
 **Changes by module:** M1 <n> attributes, <n> comments, <n> scripts removed; M2 <n> wrappers removed, landmarks added: <list>; M3 <n> classes extracted, repeated strings <before> to <after>
 **Flagged for the user:** <badges, inconsistent values, uncertain items>
 **Not run:** <check, reason>
+**Deploy:** not done; a separate step for the owner
 **Checklist:** <n> PASS, <n> FAIL, <n> N/A (full list below)
 ````
