@@ -8,7 +8,7 @@ Builder exports paste the same 6 to 10 Tailwind utilities onto every card, capti
 
 ## Preconditions
 
-In analysis-only mode (dispatcher, Modes), skip the module-order and Step 0 preconditions: run the utility-system check and the step 1 counts, and list proposed classes and inconsistent values without editing.
+In analysis-only mode (dispatcher, Modes): skip the module-order and Step 0 preconditions and the edit, recount and checkpoint steps (procedure steps 4, 7, 8 and 9); edit, commit, install and capture nothing; run the utility-system check and procedure steps 1, 2, 3, 5 and 6 as proposals only, and list proposed classes and inconsistent values.
 
 - A utility system exists. Check for a `tailwindcss` or `unocss` dependency in `package.json`, a `tailwind.config.*` or `uno.config.*` file, `@tailwind` or `@import "tailwindcss"` in the CSS, a Tailwind CDN `<script>` tag, or `@apply` in the CSS. If none exists, the utility steps do not apply. On a site with a hand-written stylesheet, offer the plain-CSS fallback below and run it only if the user accepts. Otherwise report `Module 3: not applicable (no utility system)` and skip this module; the run continues with Module 4.
 - In a full run, modules 1 and 2 are done and their diffs are reviewed. If Module 2 was skipped because checkpoint commits were declined, work on the Module 1 result. In a symptom-routed run (dispatcher, Routing by symptom), this module runs alone after step D and Step 0, with Module 1 preconditions 1 and 2 (clean tree, `<baseline-sha>`, build and test baseline); modules 1 and 2 are not required.

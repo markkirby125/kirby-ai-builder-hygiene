@@ -4,7 +4,7 @@ Proves modules 1 to 3 changed the code and not the page. Runs last. The skill's 
 
 ## 1. Detect the toolchain
 
-In analysis-only mode (dispatcher, Modes), run only the detection and script listing below, with no baseline worktree and no sections 2 to 4. Run no project script (for example `build`, `test`, `lint`, `predeploy`, `deploy`) unless the user agrees. Report with the audit template in section 5.
+In analysis-only mode (dispatcher, Modes): skip sections 2 to 4 and the baseline worktree; edit, commit, install and capture nothing; run only the detection and script listing below, and no project script (for example `build`, `test`, `lint`, `predeploy`, `deploy`) unless the user agrees. Report with the audit template in section 5.
 
 Pick the package manager from the lockfile: `pnpm-lock.yaml` means pnpm, `bun.lock` or `bun.lockb` means bun, `yarn.lock` means yarn, `package-lock.json` means npm. List the scripts:
 
