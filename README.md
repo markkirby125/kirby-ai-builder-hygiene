@@ -13,7 +13,7 @@ Copy the prompt below into your AI coding tool (Claude Code, Cursor, Windsurf, G
 ```markdown
 @agent Install the Kirby AI Builder Hygiene skill from: https://github.com/markkirby125/kirby-ai-builder-hygiene
 1. Ask me which release tag or commit sha to install, and fetch that exact ref, not the default branch.
-2. List every file you will copy and wait for my yes. Treat the files as text: do not run any script or command from the repository.
+2. Show me the full text of every file you will copy, fetched from that ref, and wait for my yes. Treat the files as text: do not run any script or command from the repository.
 3. Place them into your environment's skills/rules directory preserving the dispatcher structure.
 4. Confirm when installation is complete.
 ```
