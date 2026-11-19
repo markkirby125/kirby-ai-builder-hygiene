@@ -74,7 +74,7 @@ Use this table when the user names one problem instead of asking for the full ru
 | Div soup, single-child wrappers, no `<main>` or `<nav>`, several `<h1>` tags, skipped heading levels | [module_2_semantic_dom_flattening.md](module_2_semantic_dom_flattening.md) |
 | Long shadcn or Tailwind class strings repeated across components, mixed radius or spacing values for the same role, repeated inline styles | [module_3_utility_class_consolidation.md](module_3_utility_class_consolidation.md) |
 | "Did the cleanup break anything?", accessibility score, report needed | [module_4_verification.md](module_4_verification.md) |
-| Generic look, weak contrast, stacked pills above the h1, heading tags used only for size, template-sounding copy | [module_5_handoffs.md](module_5_handoffs.md) |
+| Generic look, weak contrast, stacked pills above the h1, heading tags used only for size, template-sounding copy, entity front-loading or Content Capsule placement | [module_5_handoffs.md](module_5_handoffs.md) |
 
 ## Outputs
 

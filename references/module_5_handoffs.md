@@ -45,3 +45,7 @@ Rule template (3 lines):
 ```
 
 Where it goes: only in a repo where the grep hits, as a file in that repo's own `.claude/rules/` folder (for example `.claude/rules/builder-hygiene.md`). Never install it globally. Never write it into any repo without the user's go-ahead: show the grep result and the file path, and wait for a yes. Keep the copy and visual lists out of the rule; they live in sections A and B.
+
+## D. Search and GEO layout
+
+Route entity front-loading and the centerpiece answer to `kirby-aiseo-skill` (Module 2 §2.1), the Content Capsule to the same skill (§2.28), and hero copy order to `kirby-text-first-cro`. This skill fixes only the markup those skills write into.

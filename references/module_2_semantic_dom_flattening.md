@@ -40,6 +40,8 @@ Every grep above carries the full cache exclude list. The `{...}` brace expansio
 
 ## 2.3 Rules
 
+Flatter, landmark-first markup is easier for layout-aware parsers to read (house guardrail; no ranking effect claimed). Where a sidebar comes before `<main>` in source order, list it for the user; do not reorder it here, because reordering can change the render.
+
 Wrappers:
 - Remove a div only when it has one child and no classes, style, ref, event handler, `id`, `key` that matters, or attribute that any selector or script reads.
 - Merge nested flex or grid containers only when one parent produces the same layout. Move the classes onto the surviving element.
