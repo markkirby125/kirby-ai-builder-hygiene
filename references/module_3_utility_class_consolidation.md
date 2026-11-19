@@ -4,7 +4,7 @@ Replaces long utility strings that repeat across a builder export with a small s
 
 ## Purpose
 
-Builder exports paste the same 6 to 10 Tailwind utilities onto every card, caption and button. A later design change then means editing 40 copies by hand, and the copies drift (`rounded-lg` here, `rounded-xl` there). This module names each repeated cluster once, by its role, so one edit changes every instance.
+Builder exports paste the same 6 to 10 Tailwind utilities onto every card, caption and button. A later design change then means editing 40 copies by hand, and the copies drift (`rounded-lg` here, `rounded-xl` there). This module names each repeated cluster once, by its role, so one edit changes every instance. Repeated utility strings also bloat the DOM; this module does not rename or randomise classes to dodge detection.
 
 ## Preconditions
 
