@@ -7,7 +7,7 @@ Project docs come first. Before routing, read the project's own design, brand an
 ## A. Visual design review
 
 Route layout, hierarchy, CTA, and wireframe restructuring:
-- For **Next.js + React** builds, route to [`kirby-anti-ai-ui-architect`](../../kirby-anti-ai-ui-architect/SKILL.md) (when installed) and/or [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when installed; read [`references/00_dispatcher.md`](../../kirby-text-first-cro/SKILL.md) §21 for service/blog page-job wireframes).
+- For **Next.js + React** builds, route to [`kirby-anti-ai-ui-architect`](../../kirby-anti-ai-ui-architect/SKILL.md) (when installed) and/or [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when installed; read `references/00_dispatcher.md` in [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) §21 for service/blog page-job wireframes).
 - For **Vite / CRA / Remix / Astro** or non-Next.js stacks (`kirby-anti-ai-ui-architect` declares these out of scope), route to [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when installed; §21) and/or optional stack-agnostic design review via `impeccable` (when installed).
 - For palette and contrast fixes on any stack, route to [`kirby-accessible-contrast`](../../kirby-accessible-contrast/SKILL.md) (when installed).
 
@@ -51,4 +51,4 @@ Where it goes: only in a repo where the grep hits, as a file in that repo's own 
 
 ## D. Search and GEO layout
 
-Route entity front-loading and the centerpiece answer to [`kirby-aiseo-skill`](../../kirby-aiseo-skill/SKILL.md) (when present in the collection; see [`references/00_dispatcher.md`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.1), the Content Capsule to the same skill (see [`references/00_dispatcher.md`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.28), and hero copy order to [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when present in the collection; see [`references/00_dispatcher.md`](../../kirby-text-first-cro/SKILL.md) -> §21); otherwise list the findings for the user. This skill fixes only the markup those skills write into.
+Route entity front-loading and the centerpiece answer to [`kirby-aiseo-skill`](../../kirby-aiseo-skill/SKILL.md) (when present in the collection; see `references/00_dispatcher.md` in [`kirby-aiseo-skill`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.1), the Content Capsule to the same skill (see `references/00_dispatcher.md` in [`kirby-aiseo-skill`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.28), and hero copy order to [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when present in the collection; see `references/00_dispatcher.md` in [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) -> §21); otherwise list the findings for the user. This skill fixes only the markup those skills write into.
