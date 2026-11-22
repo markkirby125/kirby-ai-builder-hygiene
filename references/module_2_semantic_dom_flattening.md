@@ -108,6 +108,7 @@ Do not:
 - Rename or renumber a heading's `id`.
 - Add `role` attributes where a native element does the job.
 - Change text, add or remove classes, or change styling. Moving an element's existing classes onto the surviving element (2.3) is allowed, and so is the fake-list reset. Class consolidation is Module 3.
+- Strip intentional classes: **Styling Preservation Invariant:** keep every existing class on the surviving elements (moving removed wrappers' classes onto the surviving element per `2.3`) rather than stripping intentional layout, typography, or contrast classes down to barebones unstyled HTML. Consolidating repeated utility strings belongs strictly to Module 3 (with Module 3's checkpoint approval), purely for UI quality, semantic accessibility, and maintainability — never AI-detection evasion or de-fingerprinting. Route visual hierarchy and typography cleanup via [Module 5](./module_5_handoffs.md).
 
 ## 2.7 Verification
 

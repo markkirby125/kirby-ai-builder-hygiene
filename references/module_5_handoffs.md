@@ -6,9 +6,14 @@ Project docs come first. Before routing, read the project's own design, brand an
 
 ## A. Visual design review
 
-Route to the `impeccable` skill for layout, hierarchy and CTA review, to the `better-colors` skill for palette and token work, and to the `kirby-accessible-contrast` skill for contrast fixes (optional, from the Kirby skills collection; if it is not installed, list the contrast findings for the user).
+Route layout, hierarchy, CTA, and wireframe restructuring:
+- For **Next.js + React** builds, route to [`kirby-anti-ai-ui-architect`](../../kirby-anti-ai-ui-architect/SKILL.md) (when installed) and/or [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when installed; read [`references/00_dispatcher.md`](../../kirby-text-first-cro/SKILL.md) §21 for service/blog page-job wireframes).
+- For **Vite / CRA / Remix / Astro** or non-Next.js stacks (`kirby-anti-ai-ui-architect` declares these out of scope), route to [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when installed; §21) and/or optional stack-agnostic design review via `impeccable` (when installed).
+- For palette and contrast fixes on any stack, route to [`kirby-accessible-contrast`](../../kirby-accessible-contrast/SKILL.md) (when installed).
 
-Route accessibility findings that need more than this skill's landmark and heading minimums (for example `aria-label` on a generic element, full WCAG 2.2 AA landmark and heading review) to the `better-accessibility` skill.
+If the corresponding sibling skills are unavailable, list layout, CTA, and contrast findings directly for the user.
+
+Route accessibility findings that need more than this skill's landmark and heading minimums (for example `aria-label` on a generic element, full WCAG 2.2 AA landmark and heading review) to `better-accessibility` (optional external skill, if installed; otherwise record the full WCAG 2.2 AA findings for the user).
 
 Name these checks in the hand-off:
 - A palette grounded in the brand, with WCAG AA contrast for text and controls.
@@ -21,9 +26,7 @@ Name these checks in the hand-off:
 
 ## B. Copy edit
 
-Route to the `no-ai-slop` skill to cut AI patterns from existing text, and to the `copy-editing` skill for a full marketing copy pass.
-
-Name these checks in the hand-off:
+Route conversion copy rewrites, zero-slop prose passes, and direct-response verification to [`kirby-direct-response-copywriting`](../../kirby-direct-response-copywriting/SKILL.md) (if present in the collection; plus [`kirby-practitioner-insight-engine`](../../kirby-practitioner-insight-engine/SKILL.md) when first-hand SME evidence is available), and optional pattern removal (`no-ai-slop`, if installed). Name these checks in the hand-off (or if these sibling skills are not installed, list these copy findings for the user as owner-applied edits):
 - Cut filler vocabulary.
 - Rewrite "it's not just X, it's Y" lines as one plain claim.
 - Delete throat-clearing openers and generic closing headings.
@@ -48,4 +51,4 @@ Where it goes: only in a repo where the grep hits, as a file in that repo's own 
 
 ## D. Search and GEO layout
 
-Route entity front-loading and the centerpiece answer to `kirby-aiseo-skill` (Module 2 §2.1), the Content Capsule to the same skill (§2.28), and hero copy order to `kirby-text-first-cro`. This skill fixes only the markup those skills write into.
+Route entity front-loading and the centerpiece answer to [`kirby-aiseo-skill`](../../kirby-aiseo-skill/SKILL.md) (when present in the collection; see [`references/00_dispatcher.md`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.1), the Content Capsule to the same skill (see [`references/00_dispatcher.md`](../../kirby-aiseo-skill/SKILL.md) -> Module 2 §2.28), and hero copy order to [`kirby-text-first-cro`](../../kirby-text-first-cro/SKILL.md) (when present in the collection; see [`references/00_dispatcher.md`](../../kirby-text-first-cro/SKILL.md) -> §21); otherwise list the findings for the user. This skill fixes only the markup those skills write into.
